@@ -6,7 +6,7 @@ import java.awt.*;
 public class Elements extends JLabel{
 
     private int x;
-    private int y;
+    private int y ;
     private Image image;
 
 
@@ -20,10 +20,6 @@ public class Elements extends JLabel{
 
     public Image getImage() {
         return image;
-    }
-
-    public void setImage(Image img){
-        image = img;
     }
 
     public void setX(int x) {
@@ -59,4 +55,5 @@ public class Elements extends JLabel{
                 return null;
         }
     }
+
 }

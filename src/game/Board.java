@@ -2,6 +2,8 @@ package game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -11,9 +13,11 @@ public class Board extends JPanel implements KeyListener {
     private final int OFFSET = 40;
     private Elements[][] elements;
     private Player player;
-
     private final int boardWidth = 10;
     private final int boardHeight = 5;
+
+    private int numberOfGoals = 0;
+    private int goalsReached = 0;
 
     public Board(){
         this.elements = new Elements[boardWidth][boardHeight];
@@ -23,6 +27,7 @@ public class Board extends JPanel implements KeyListener {
         this.player = findPlayer();
         addKeyListener(this);
         setFocusable(true);
+        requestFocus();
 
     }
 
@@ -40,10 +45,32 @@ public class Board extends JPanel implements KeyListener {
                 if (currentChar != ' ') {
                     elements[i][j] = Elements.createInstance(currentChar, i * OFFSET, j * OFFSET);
                     add(elements[i][j]);
+                    if (currentChar == '@' || currentChar == '$' || currentChar == 'x') {
+                        EmptySpace emptySpaceBehind = new EmptySpace(i * OFFSET, j * OFFSET);
+                        add(emptySpaceBehind);
+                    }
+                    if (currentChar == 'x') {
+                    numberOfGoals++;
+                    }
                 }
             }
         }
     }
+
+    public Elements[][] getElements() {
+        return elements;
+    }
+
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+
 
     public Player findPlayer() {
         for (int i = 0; i < boardWidth; i++) {
@@ -55,14 +82,81 @@ public class Board extends JPanel implements KeyListener {
         }
         return null;  // Retournez null si le joueur n'est pas trouvé
     }
+
+    public void checkWinCondition() {
+        int boxesAtGoal = countBoxesAtGoal();
+
+        // La condition de victoire est que tous les objectifs ont une boîte
+        if (boxesAtGoal == numberOfGoals) {
+            showWinMessage();
+        }
+    }
+
+    private int countBoxesAtGoal() {
+
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                Elements currentElement = elements[i][j];
+                System.out.println(this.getElements()[i][j]);
+
+                if (currentElement instanceof Box) {
+                    // Vérifie si la boîte est sur un objectif
+                    if (isBoxAtGoal(i, j)) {
+                       // System.out.println(currentElement.getClass().getSimpleName());
+                        goalsReached++;
+                    }
+                }
+            }
+        }
+
+        return goalsReached;
+    }
+
+    private boolean isBoxAtGoal(int boxX, int boxY) {
+
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                Elements currentElement = elements[i][j];
+                if (currentElement instanceof Goal && i == boxX && j == boxY) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    public void showWinMessage() {
+        Object[] options = {"OK"};
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                "Congratulations! You won!",
+                "You Won",
+                JOptionPane.YES_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+            System.exit(0); // Fermer le jeu
+        }
+    }
+
+    public void setElement(int x, int y, Elements element) {
+        elements[x][y] = element;
+    }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
-                if (elements[i][j] != null) {
-                    g.drawImage(elements[i][j].getImage(), i * OFFSET, j * OFFSET, this);
+                Elements currentElement = elements[i][j];
+                if (currentElement != null) {
+                    g.drawImage(currentElement.getImage(), i * OFFSET, j * OFFSET, this);
                 }
             }
         }
@@ -99,18 +193,7 @@ public class Board extends JPanel implements KeyListener {
 
     }
 
-    public Elements[][] getElements() {
-        return elements;
-    }
 
-
-    public int getBoardHeight() {
-        return boardHeight;
-    }
-
-    public int getBoardWidth() {
-        return boardWidth;
-    }
 
 }
 

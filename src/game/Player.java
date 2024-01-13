@@ -20,9 +20,6 @@ public class Player extends Elements {
         if (isValidMove(board, newPosX, newPosY, behindNewPosX, behindNewPosY)) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            System.out.println(destinationElement.getClass());
-            
-            
 
             // Movement de joueur
             this.setX(newPosX);
@@ -53,7 +50,6 @@ public class Player extends Elements {
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            System.out.println("destination player" + destinationElement.getClass());
 
             // Vérifier si la destination est un mur
             if (destinationElement instanceof Wall) {
@@ -64,7 +60,7 @@ public class Player extends Elements {
             if (destinationElement instanceof Box) {
                 try {
                     Elements behindDestinationElement = board.getElements()[behindNewPosX / OFFSET][behindNewPosY / OFFSET];
-                    System.out.println(!(behindDestinationElement instanceof Wall));
+                    
                     return !(behindDestinationElement instanceof Wall);
                 }
                 catch (IndexOutOfBoundsException e) {

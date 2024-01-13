@@ -11,13 +11,14 @@ public class Box extends Elements {
     }
 
     public void moveByPlayer(Board board, int deltaX, int deltaY) {
-        System.out.println(this);
 
         int newPosX = this.getX() + deltaX * OFFSET;
         int newPosY = this.getY() + deltaY * OFFSET;
+        int behindNewPosX = newPosX + deltaX * OFFSET;
+        int behindNewPosY = newPosY + deltaY * OFFSET;
 
         // Vérifier si le mouvement est valide
-        if (isValidMove(board, newPosX, newPosY)) {
+        if (isValidMove(board, newPosX, newPosY, behindNewPosX, behindNewPosY)) {
             
             this.setX(newPosX);
             this.setY(newPosY);
@@ -35,14 +36,21 @@ public class Box extends Elements {
         }
     }
 
-
-    public boolean isValidMove(Board board, int newPosX, int newPosY) {
+    public boolean isValidMove(Board board, int newPosX, int newPosY, int behindNewPosX, int behindNewPosY) {
         if (newPosX >= 0 && newPosX < board.getBoardWidth() * OFFSET &&
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            System.out.println(destinationElement.getClass().getName());
-            return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
+
+            if (destinationElement instanceof Box) {
+                return false;
+            }
+
+            else{
+                return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
+            }
+
+            
         }
         return false;
-    }
+    }    
 }

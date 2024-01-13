@@ -11,21 +11,27 @@ public class Box extends Elements {
     }
 
     public void moveByPlayer(Board board, int deltaX, int deltaY) {
+        System.out.println(this);
 
-        int newPosX = getX() + deltaX * OFFSET;
-        int newPosY = getY() + deltaY * OFFSET;
+        int newPosX = this.getX() + deltaX * OFFSET;
+        int newPosY = this.getY() + deltaY * OFFSET;
 
         // Vérifier si le mouvement est valide
         if (isValidMove(board, newPosX, newPosY)) {
-            // Remplacer l'ancien emplacement par emptySpace
-            board.setElement(this.getX() / OFFSET, this.getY() / OFFSET, new EmptySpace(this.getX(), this.getY()));
+            
             this.setX(newPosX);
             this.setY(newPosY);
+            
             // Mettre à jour l'élément de la case de destination
+            Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
+            
             board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
             board.setComponentZOrder(this, 0);
             board.repaint();
-
+            if (destinationElement instanceof Goal){
+                board.checkWinCondition();
+            }
+          
         }
     }
 
@@ -34,7 +40,8 @@ public class Box extends Elements {
         if (newPosX >= 0 && newPosX < board.getBoardWidth() * OFFSET &&
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            return destinationElement instanceof EmptySpace || destinationElement instanceof Goal;
+            System.out.println(destinationElement.getClass().getName());
+            return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
         }
         return false;
     }

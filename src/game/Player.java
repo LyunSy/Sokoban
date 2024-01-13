@@ -20,29 +20,30 @@ public class Player extends Elements {
         if (isValidMove(board, newPosX, newPosY, behindNewPosX, behindNewPosY)) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
+            System.out.println(destinationElement.getClass());
+            
+            
 
-            // Si la destination est une boîte
-            if (destinationElement instanceof Box   ){
-                    Box box = (Box) destinationElement;
-                    box.moveByPlayer(board, deltaX, deltaY);
-                    this.setX(newPosX);
-                    this.setY(newPosY);
-                    board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
-                    board.setComponentZOrder(this, 0);
-                    board.repaint();
-
-            } else {
-                // Si la destination n'est pas une boîte
-                board.setElement(this.getX() / OFFSET, this.getY() / OFFSET, new EmptySpace(this.getX(), this.getY()));
-                this.setX(newPosX);
-                this.setY(newPosY);
-                // Mettre à jour l'élément de la case de destination
-                board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
-                board.setComponentZOrder(this, 0);
-                board.repaint();
+            // Movement de joueur
+            this.setX(newPosX);
+            this.setY(newPosY);
+            
+            //Si la destination est une boite, Pousse la boite
+            if (destinationElement instanceof Box ){
+                Box box = (Box) destinationElement;
+                box.moveByPlayer(board, deltaX, deltaY);
             }
-
-            board.checkWinCondition();
+            
+            
+            board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
+            board.setComponentZOrder(this, 0);
+            if (destinationElement instanceof Goal){
+                board.setElement(newPosX / OFFSET, newPosY / OFFSET, new Goal(newPosX,newPosY));
+                
+            }else{
+                board.setElement(this.getX() / OFFSET, this.getY() / OFFSET, new EmptySpace(this.getX(),this.getY()));
+            }
+            board.repaint();
         }
     }
 
@@ -52,6 +53,7 @@ public class Player extends Elements {
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
+            System.out.println("destination player" + destinationElement.getClass());
 
             // Vérifier si la destination est un mur
             if (destinationElement instanceof Wall) {
@@ -62,6 +64,7 @@ public class Player extends Elements {
             if (destinationElement instanceof Box) {
                 try {
                     Elements behindDestinationElement = board.getElements()[behindNewPosX / OFFSET][behindNewPosY / OFFSET];
+                    System.out.println(!(behindDestinationElement instanceof Wall));
                     return !(behindDestinationElement instanceof Wall);
                 }
                 catch (IndexOutOfBoundsException e) {

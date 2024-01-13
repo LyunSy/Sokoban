@@ -34,8 +34,8 @@ public class Board extends JPanel implements KeyListener {
     public void initBoard(){
         String[] map = {
                 "##########",
-                "#...x#..x#",
-                "#.$##.$.##",
+                "#...x#.x.#",
+                "#.$##.$..#",
                 "#@.......#",
                 "##########",
         };
@@ -84,48 +84,13 @@ public class Board extends JPanel implements KeyListener {
     }
 
     public void checkWinCondition() {
-        int boxesAtGoal = countBoxesAtGoal();
+        goalsReached++;
 
         // La condition de victoire est que tous les objectifs ont une boîte
-        if (boxesAtGoal == numberOfGoals) {
+        if (goalsReached == numberOfGoals) {
             showWinMessage();
         }
     }
-
-    private int countBoxesAtGoal() {
-
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardHeight; j++) {
-                Elements currentElement = elements[i][j];
-                System.out.println(this.getElements()[i][j]);
-
-                if (currentElement instanceof Box) {
-                    // Vérifie si la boîte est sur un objectif
-                    if (isBoxAtGoal(i, j)) {
-                       // System.out.println(currentElement.getClass().getSimpleName());
-                        goalsReached++;
-                    }
-                }
-            }
-        }
-
-        return goalsReached;
-    }
-
-    private boolean isBoxAtGoal(int boxX, int boxY) {
-
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardHeight; j++) {
-                Elements currentElement = elements[i][j];
-                if (currentElement instanceof Goal && i == boxX && j == boxY) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
 
     public void showWinMessage() {
         Object[] options = {"OK"};

@@ -3,15 +3,13 @@ package game;
 import javax.swing.*;
 import java.awt.*;
 
-public class Elements extends JLabel{
+public class Elements extends JLabel {
 
     private int x;
-    private int y ;
+    private int y;
     private Image image;
 
-
-
-    public Elements(int x, int y, Icon icon ) {
+    public Elements(int x, int y, Icon icon) {
         this.x = x;
         this.y = y;
         setIcon(icon);
@@ -38,10 +36,10 @@ public class Elements extends JLabel{
         return y;
     }
 
-    public static Elements createInstance(char character, int x, int y){
-        switch (character){
+    public static Elements createInstance(char character, int x, int y) {
+        switch (character) {
             case '#':
-                return new Wall(x,y);
+                return new Wall(x, y);
             case '.':
                 return new EmptySpace(x, y);
             case 'x':

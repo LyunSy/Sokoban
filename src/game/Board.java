@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
 public class Board extends JPanel implements KeyListener {
 
     private final int OFFSET = 40;
@@ -19,7 +18,7 @@ public class Board extends JPanel implements KeyListener {
     private int numberOfGoals = 0;
     private int goalsReached = 0;
 
-    public Board(){
+    public Board() {
         this.elements = new Elements[boardWidth][boardHeight];
         initBoard();
         setLayout(new GridLayout(boardHeight, boardWidth));
@@ -31,7 +30,7 @@ public class Board extends JPanel implements KeyListener {
 
     }
 
-    public void initBoard(){
+    public void initBoard() {
         String[] map = {
                 "##########",
                 "#...x#.x.#",
@@ -50,7 +49,7 @@ public class Board extends JPanel implements KeyListener {
                         add(emptySpaceBehind);
                     }
                     if (currentChar == 'x') {
-                    numberOfGoals++;
+                        numberOfGoals++;
                     }
                 }
             }
@@ -61,7 +60,6 @@ public class Board extends JPanel implements KeyListener {
         return elements;
     }
 
-
     public int getBoardHeight() {
         return boardHeight;
     }
@@ -69,8 +67,6 @@ public class Board extends JPanel implements KeyListener {
     public int getBoardWidth() {
         return boardWidth;
     }
-
-
 
     public Player findPlayer() {
         for (int i = 0; i < boardWidth; i++) {
@@ -80,7 +76,7 @@ public class Board extends JPanel implements KeyListener {
                 }
             }
         }
-        return null;  // Retournez null si le joueur n'est pas trouvé
+        return null; // Retournez null si le joueur n'est pas trouvé
     }
 
     public void checkWinCondition() {
@@ -93,7 +89,7 @@ public class Board extends JPanel implements KeyListener {
     }
 
     public void showWinMessage() {
-        Object[] options = {"OK"};
+        Object[] options = { "OK" };
         int choice = JOptionPane.showOptionDialog(
                 this,
                 "Congratulations! You won!",
@@ -102,8 +98,7 @@ public class Board extends JPanel implements KeyListener {
                 JOptionPane.INFORMATION_MESSAGE,
                 null,
                 options,
-                options[0]
-        );
+                options[0]);
 
         if (choice == JOptionPane.YES_OPTION) {
             System.exit(0); // Fermer le jeu
@@ -113,6 +108,7 @@ public class Board extends JPanel implements KeyListener {
     public void setElement(int x, int y, Elements element) {
         elements[x][y] = element;
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -142,13 +138,13 @@ public class Board extends JPanel implements KeyListener {
                 player.playerMove(this, 0, -1);
                 break;
             case KeyEvent.VK_DOWN:
-                player.playerMove(this,0, 1);
+                player.playerMove(this, 0, 1);
                 break;
             case KeyEvent.VK_LEFT:
-                player.playerMove(this,-1, 0);
+                player.playerMove(this, -1, 0);
                 break;
             case KeyEvent.VK_RIGHT:
-                player.playerMove(this,1, 0);
+                player.playerMove(this, 1, 0);
                 break;
         }
     }
@@ -158,8 +154,4 @@ public class Board extends JPanel implements KeyListener {
 
     }
 
-
-
 }
-
-

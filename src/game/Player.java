@@ -24,21 +24,20 @@ public class Player extends Elements {
             // Movement de joueur
             this.setX(newPosX);
             this.setY(newPosY);
-            
-            //Si la destination est une boite, Pousse la boite
-            if (destinationElement instanceof Box ){
+
+            // Si la destination est une boite, Pousse la boite
+            if (destinationElement instanceof Box) {
                 Box box = (Box) destinationElement;
                 box.moveByPlayer(board, deltaX, deltaY);
             }
-            
-            
+
             board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
             board.setComponentZOrder(this, 0);
-            if (destinationElement instanceof Goal){
-                board.setElement(newPosX / OFFSET, newPosY / OFFSET, new Goal(newPosX,newPosY));
-                
-            }else{
-                board.setElement(this.getX() / OFFSET, this.getY() / OFFSET, new EmptySpace(this.getX(),this.getY()));
+            if (destinationElement instanceof Goal) {
+                board.setElement(newPosX / OFFSET, newPosY / OFFSET, new Goal(newPosX, newPosY));
+
+            } else {
+                board.setElement(this.getX() / OFFSET, this.getY() / OFFSET, new EmptySpace(this.getX(), this.getY()));
             }
             board.repaint();
         }
@@ -50,7 +49,7 @@ public class Player extends Elements {
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            
+
             // Vérifier si la destination est un mur
             if (destinationElement instanceof Wall) {
                 return false;
@@ -58,14 +57,14 @@ public class Player extends Elements {
 
             // Si la destination est une boîte, vérifier si la position derrière est un mur
             if (destinationElement instanceof Box) {
-                try { 
-                    Elements behindDestinationElement = board.getElements()[behindNewPosX / OFFSET][behindNewPosY / OFFSET];
-                    if (behindDestinationElement instanceof Box){
+                try {
+                    Elements behindDestinationElement = board.getElements()[behindNewPosX / OFFSET][behindNewPosY
+                            / OFFSET];
+                    if (behindDestinationElement instanceof Box) {
                         return false;
                     }
                     return !(behindDestinationElement instanceof Wall);
-                }
-                catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                     return false;
                 }
             }
@@ -75,6 +74,5 @@ public class Player extends Elements {
 
         return false;
     }
-
 
 }

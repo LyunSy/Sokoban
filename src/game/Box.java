@@ -19,20 +19,20 @@ public class Box extends Elements {
 
         // Vérifier si le mouvement est valide
         if (isValidMove(board, newPosX, newPosY, behindNewPosX, behindNewPosY)) {
-            
+
             this.setX(newPosX);
             this.setY(newPosY);
-            
+
             // Mettre à jour l'élément de la case de destination
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-            
+
             board.setElement(newPosX / OFFSET, newPosY / OFFSET, this);
             board.setComponentZOrder(this, 0);
             board.repaint();
-            if (destinationElement instanceof Goal){
+            if (destinationElement instanceof Goal) {
                 board.checkWinCondition();
             }
-          
+
         }
     }
 
@@ -43,8 +43,7 @@ public class Box extends Elements {
 
             return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
 
-            
         }
         return false;
-    }    
+    }
 }

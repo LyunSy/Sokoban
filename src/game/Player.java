@@ -50,7 +50,7 @@ public class Player extends Elements {
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
 
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
-
+            
             // Vérifier si la destination est un mur
             if (destinationElement instanceof Wall) {
                 return false;
@@ -58,9 +58,11 @@ public class Player extends Elements {
 
             // Si la destination est une boîte, vérifier si la position derrière est un mur
             if (destinationElement instanceof Box) {
-                try {
+                try { 
                     Elements behindDestinationElement = board.getElements()[behindNewPosX / OFFSET][behindNewPosY / OFFSET];
-                    
+                    if (behindDestinationElement instanceof Box){
+                        return false;
+                    }
                     return !(behindDestinationElement instanceof Wall);
                 }
                 catch (IndexOutOfBoundsException e) {

@@ -41,13 +41,7 @@ public class Box extends Elements {
                 newPosY >= 0 && newPosY < board.getBoardHeight() * OFFSET) {
             Elements destinationElement = board.getElements()[newPosX / OFFSET][newPosY / OFFSET];
 
-            if (destinationElement instanceof Box) {
-                return false;
-            }
-
-            else{
-                return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
-            }
+            return !(destinationElement instanceof Wall) || !(destinationElement instanceof Box);
 
             
         }
